@@ -8,6 +8,6 @@ router = APIRouter()
 async def app_state(request: Request):
     return generate_response(message="Everything looks good.", data={
         "authenticated": True,
-        "initalized": False if request.state.users_length == 0 else True,
+        "initialized": False if request.state.users_length == 0 else True,
         "loggedin": True if request.state.user else False
     }, code=200)

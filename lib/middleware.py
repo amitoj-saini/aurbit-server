@@ -21,7 +21,6 @@ async def log_requests(request: Request, call_next):
 def auth_validator(pwd):
     async def middleware(request: Request, call_next):
         auth_header = request.headers.get("authorization")
-        print(auth_header)
         auth = auth_header.removeprefix("Bearer ").strip() if auth_header and "Bearer" in auth_header else None
         if auth:
             return await call_next(request)
@@ -38,7 +37,8 @@ def auth_validator(pwd):
 async def path_validator(request: Request, call_next):
     # if no users created ( setup )
     request.state.users_length = len(fetch_users())
-    if request.state.users_length == 0 and (request.url.path.rstrip("/") != "/users/register" or request.method != "POST"):
+    
+    if request.state.users_length == 0 and (request.url.path.rstrip("/") != "/users/register" or request.method != "POST") and request.url.path.rstrip("/") != "/app-state":
         return responses.generate_response(
             message="AurBit hasn't been setup yet, create a user.",
             code=400
